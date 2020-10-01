@@ -1,11 +1,7 @@
 package model;
 
-import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.ImagePattern;
 import model.squareContent.Grenade;
-import model.wallcreation.Wall;
-import model.wallcreation.WallGridMaker;
 import model.wallcreation.WallMakerApp;
 
 import java.util.HashSet;
@@ -21,6 +17,9 @@ public class Grid {
     private Set<Square> squares = new HashSet<>();
     private GridPane grid = new GridPane();
 
+    private final Predicate<Square> grenadeNotActive = square -> !square.getGrenade().isActive();
+    private final Predicate<Square> grenadeNotNull = square -> square.getGrenade() != null;
+    private final Predicate<Square> grenadeIsPickedUp = square -> square.getGrenade().isPickedUp();
 
     public Grid(int size) {
         this.GRID_SIZE = size;
@@ -31,10 +30,7 @@ public class Grid {
         return grid;
     }
 
-    public Set<Square> getSquares() {
-        return squares;
-    }
-
+    //Initialize the grid and add walls/items
     private void createGrid() {
 
         for (int row = 0; row < GRID_SIZE; row++) {
@@ -71,6 +67,7 @@ public class Grid {
             }
         }
     }
+
 
     private boolean checkEmptySquare(Coordinate coordinate) {
         return (!getSquare(coordinate).getWall() && getSquare(coordinate).getPlayer() == null);
@@ -134,28 +131,24 @@ public class Grid {
     }
 
     private void createLightTrails(List pastCoordinates) {
-        if(pastCoordinates.size() == 1){
+        if (pastCoordinates.size() == 1) {
             getSquare((Coordinate) pastCoordinates.get((pastCoordinates.size() - 1))).setLightTrail();
         }
-        if(pastCoordinates.size() == 2){
+        if (pastCoordinates.size() == 2) {
             getSquare((Coordinate) pastCoordinates.get((pastCoordinates.size() - 1))).setLightTrail();
             getSquare((Coordinate) pastCoordinates.get((pastCoordinates.size() - 2))).setLightTrail();
         }
 
-        if(pastCoordinates.size() >= 3){
+        if (pastCoordinates.size() >= 3) {
             getSquare((Coordinate) pastCoordinates.get(pastCoordinates.size() - 1)).setLightTrail();
             getSquare((Coordinate) pastCoordinates.get(pastCoordinates.size() - 2)).setLightTrail();
             getSquare((Coordinate) pastCoordinates.get(pastCoordinates.size() - 3)).setLightTrail();
         }
 
-        if(pastCoordinates.size() >= 4){
+        if (pastCoordinates.size() >= 4) {
             getSquare((Coordinate) pastCoordinates.get(pastCoordinates.size() - 4)).removeLightTrail();
         }
     }
-
-    private Predicate<Square> grenadeNotActive = square -> !square.getGrenade().isActive();
-    private Predicate<Square> grenadeNotNull = square -> square.getGrenade() != null;
-    private Predicate<Square> grenadeIsPickedUp = square -> square.getGrenade().isPickedUp();
 
 
     public void setGrenadeActive(Player player) {
@@ -172,23 +165,23 @@ public class Grid {
     }
 
     //Get squares around player
-    public Square getSquareAbove(Coordinate coordinate){
-        Coordinate coordinateAbove = new Coordinate(coordinate.getX_COORDINATE(), coordinate.getY_COORDINATE() -1);
+    public Square getSquareAbove(Coordinate coordinate) {
+        Coordinate coordinateAbove = new Coordinate(coordinate.getX_COORDINATE(), coordinate.getY_COORDINATE() - 1);
         return getSquare(coordinateAbove);
     }
 
-    public Square getSquareBelow(Coordinate coordinate){
-        Coordinate coordinateAbove = new Coordinate(coordinate.getX_COORDINATE(), coordinate.getY_COORDINATE() +1);
+    public Square getSquareBelow(Coordinate coordinate) {
+        Coordinate coordinateAbove = new Coordinate(coordinate.getX_COORDINATE(), coordinate.getY_COORDINATE() + 1);
         return getSquare(coordinateAbove);
     }
 
-    public Square getSquareLeft(Coordinate coordinate){
-        Coordinate coordinateAbove = new Coordinate(coordinate.getX_COORDINATE() -1, coordinate.getY_COORDINATE());
+    public Square getSquareLeft(Coordinate coordinate) {
+        Coordinate coordinateAbove = new Coordinate(coordinate.getX_COORDINATE() - 1, coordinate.getY_COORDINATE());
         return getSquare(coordinateAbove);
     }
 
-    public Square getSquareRight(Coordinate coordinate){
-        Coordinate coordinateAbove = new Coordinate(coordinate.getX_COORDINATE() +1, coordinate.getY_COORDINATE());
+    public Square getSquareRight(Coordinate coordinate) {
+        Coordinate coordinateAbove = new Coordinate(coordinate.getX_COORDINATE() + 1, coordinate.getY_COORDINATE());
         return getSquare(coordinateAbove);
     }
 

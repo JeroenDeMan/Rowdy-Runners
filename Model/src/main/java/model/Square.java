@@ -40,16 +40,6 @@ public class Square extends Rectangle {
         this.setFill(SAND_COLOR);
     }
 
-    public Square(double width, double height, Paint fill, Coordinate coordinate) {
-        super(width, height, fill);
-        this.COORDINATE = coordinate;
-    }
-
-    public Square(double x, double y, double width, double height, Coordinate coordinate) {
-        super(x, y, width, height);
-        this.COORDINATE = coordinate;
-    }
-
 
     // Getters & Setters
 
